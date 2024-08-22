@@ -12,6 +12,7 @@ const (
 	DaServerAddressFlagName = "plasma.da-server"
 	VerifyOnReadFlagName    = "plasma.verify-on-read"
 	DaServiceFlag           = "plasma.da-service"
+	DoubleSend              = "plasma.double-send"
 )
 
 func plasmaEnv(envprefix, v string) []string {
@@ -47,6 +48,13 @@ func CLIFlags(envPrefix string, category string) []cli.Flag {
 			EnvVars:  plasmaEnv(envPrefix, "DA_SERVICE"),
 			Category: category,
 		},
+		&cli.BoolFlag{
+			Name:     DoubleSend,
+			Usage:    "Start the original sending mode and plasma mode at the same time",
+			Value:    false,
+			EnvVars:  plasmaEnv(envPrefix, "DOUBLE_SEND"),
+			Category: category,
+		},
 	}
 }
 
@@ -55,6 +63,7 @@ type CLIConfig struct {
 	DAServerURL  string
 	VerifyOnRead bool
 	GenericDA    bool
+	DoubleSend   bool
 }
 
 func (c CLIConfig) Check() error {
@@ -79,5 +88,6 @@ func ReadCLIConfig(c *cli.Context) CLIConfig {
 		DAServerURL:  c.String(DaServerAddressFlagName),
 		VerifyOnRead: c.Bool(VerifyOnReadFlagName),
 		GenericDA:    c.Bool(DaServiceFlag),
+		DoubleSend:   c.Bool(DoubleSend),
 	}
 }

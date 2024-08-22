@@ -494,6 +494,22 @@ func (l *BatchSubmitter) sendTransaction(ctx context.Context, txdata txData, que
 			// or configuration issue.
 			return fmt.Errorf("could not create blob tx candidate: %w", err)
 		}
+		if l.Config.DoubleSend && l.Config.UsePlasma {
+			// sanity check
+			if nf := len(txdata.frames); nf != 1 {
+				l.Log.Crit("unexpected number of frames in calldata tx", "num_frames", nf)
+			}
+			data := txdata.CallData()
+			comm, err := l.PlasmaDA.SetInput(ctx, data)
+			if err != nil {
+				l.Log.Error("Failed to post input to Plasma DA", "error", err)
+				// requeue frame if we fail to post to the DA Provider so it can be retried
+				l.recordFailedTx(txdata.ID(), err)
+				return nil
+			}
+			candidate.TxData = comm.TxData()
+			l.Log.Info("最终交易", "blob", len(candidate.Blobs), "txData", candidate.TxData)
+		}
 	} else {
 		// sanity check
 		if nf := len(txdata.frames); nf != 1 {

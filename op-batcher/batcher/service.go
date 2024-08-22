@@ -43,6 +43,8 @@ type BatcherConfig struct {
 	// will post inputs to the Plasma DA server and post commitments to blobs or calldata.
 	UsePlasma bool
 
+	DoubleSend bool
+
 	WaitNodeSync        bool
 	CheckRecentTxsDepth int
 }
@@ -239,6 +241,7 @@ func (bs *BatcherService) initChannelConfig(cfg *CLIConfig) error {
 	bs.Log.Info("Initialized channel-config",
 		"use_blobs", bs.UseBlobs,
 		"use_plasma", bs.UsePlasma,
+		"double_send", bs.DoubleSend,
 		"max_frame_size", cc.MaxFrameSize,
 		"target_num_frames", cc.TargetNumFrames,
 		"compressor", cc.CompressorConfig.Kind,
@@ -331,12 +334,14 @@ func (bs *BatcherService) initRPCServer(cfg *CLIConfig) error {
 }
 
 func (bs *BatcherService) initPlasmaDA(cfg *CLIConfig) error {
+	bs.Log.Info("plasmaDAConifg", "DoubleSend", cfg.PlasmaDA.DoubleSend, "enabled", cfg.PlasmaDA.Enabled)
 	config := cfg.PlasmaDA
 	if err := config.Check(); err != nil {
 		return err
 	}
 	bs.PlasmaDA = config.NewDAClient()
 	bs.UsePlasma = config.Enabled
+	bs.DoubleSend = config.DoubleSend
 	return nil
 }
 
