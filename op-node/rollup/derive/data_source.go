@@ -52,6 +52,7 @@ func NewDataSourceFactory(log log.Logger, cfg *rollup.Config, fetcher L1Fetcher,
 		l1Signer:          cfg.L1Signer(),
 		batchInboxAddress: cfg.BatchInboxAddress,
 		plasmaEnabled:     cfg.PlasmaEnabled(),
+		mixedEnabled:      cfg.PlasmaConfig.DAMixed,
 	}
 	return &DataSourceFactory{
 		log:           log,
@@ -68,6 +69,9 @@ func (ds *DataSourceFactory) OpenData(ctx context.Context, ref eth.L1BlockRef, b
 	// Creates a data iterator from blob or calldata source so we can forward it to the plasma source
 	// if enabled as it still requires an L1 data source for fetching input commmitments.
 	var src DataIter
+	if ds.dsCfg.mixedEnabled {
+		return NewMixedDataSource(ctx, ds.log, ds.dsCfg, ds.fetcher, ds.blobsFetcher, ds.plasmaFetcher, ref, batcherAddr), nil
+	}
 	if ds.ecotoneTime != nil && ref.Time >= *ds.ecotoneTime {
 		if ds.blobsFetcher == nil {
 			return nil, fmt.Errorf("ecotone upgrade active but beacon endpoint not configured")
@@ -88,6 +92,7 @@ type DataSourceConfig struct {
 	l1Signer          types.Signer
 	batchInboxAddress common.Address
 	plasmaEnabled     bool
+	mixedEnabled      bool
 }
 
 // isValidBatchTx returns true if:

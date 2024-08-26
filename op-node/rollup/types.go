@@ -60,6 +60,8 @@ type PlasmaConfig struct {
 	// DA resolve window value set on the DAC contract. Used in plasma mode
 	// to compute when a challenge expires and trigger a reorg if needed.
 	DAResolveWindow uint64 `json:"da_resolve_window"`
+
+	DAMixed bool `json:"da_mixed"`
 }
 
 type Config struct {

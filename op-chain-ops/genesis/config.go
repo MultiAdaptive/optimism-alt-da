@@ -292,6 +292,8 @@ type DeployConfig struct {
 
 	// UseInterop is a flag that indicates if the system is using interop
 	UseInterop bool `json:"useInterop,omitempty"`
+
+	UseMixed bool `json:"useMixed"`
 }
 
 // Copy will deeply copy the DeployConfig. This does a JSON roundtrip to copy
@@ -623,6 +625,7 @@ func (d *DeployConfig) RollupConfig(l1StartBlock *types.Block, l2GenesisBlockHas
 			DAChallengeAddress: d.DAChallengeProxy,
 			DAChallengeWindow:  d.DAChallengeWindow,
 			DAResolveWindow:    d.DAResolveWindow,
+			DAMixed:            d.UseMixed,
 		}
 	}
 
