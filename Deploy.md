@@ -278,6 +278,8 @@ You're almost ready to run your chain! Now you just need to run a few commands t
    ```
    
 ## Start MultiAdaptive TransitStation
+MultiAdaptive TransitStation will help you to submit your DA data to MultiAdaptive.
+
 Please refer to the [documentation](https://github.com/MultiAdaptive/transitStation/blob/main/README.md) for details.
 
 ## Start op-geth
