@@ -13,15 +13,15 @@
 | direnv     | ^2      | direnv --version      |
 
 ## Compile the Core Codebase  
-Setting up the EVM Rollup requires compiling code from two critical repositories: the [optimism-Alt-DA](https://github.com/MultiAdaptive/optimism-alt-da) monorepo and the [op-geth](https://github.com/ethereum-optimism/op-geth) repository.  
+Setting up the EVM Rollup requires compiling code from two critical repositories: the [optimism-dual-da](https://github.com/MultiAdaptive/optimism-dual-da) monorepo and the [op-geth](https://github.com/ethereum-optimism/op-geth) repository.  
 
 ## Build the Adapter Source
 
 1. Clone the Optimism Monorepo  
     ```Base
     cd ~
-    git clone https://github.com/MultiAdaptive/optimism-alt-da.git
-    cd optimism-alt-da
+    git clone https://github.com/MultiAdaptive/optimism-dual-da.git
+    cd optimism-dual-da
     ```
 2. Install modules
     ```Base
@@ -48,7 +48,7 @@ Setting up the EVM Rollup requires compiling code from two critical repositories
 ## Fill Out Environment Variables  
 1. Enter the Optimism Monorepo
     ```Base
-    cd ~/optimism-alt-da
+    cd ~/optimism-dual-da
     ```
 2. Duplicate the sample environment variable file  
     ```Base
@@ -72,7 +72,7 @@ Create four essential accounts with private keys:
 
 1. Enter the Optimism Monorepo
     ```Base
-    cd ~/optimism-alt-da
+    cd ~/optimism-dual-da
     ```
 2. Generate new addresses
     ```Base
@@ -112,7 +112,7 @@ Create four essential accounts with private keys:
 ## Load Environment variables
 1. Enter the Optimism Monorepo  
     ```Base
-    cd ~/optimism-alt-da
+    cd ~/optimism-dual-da
     ```
 2. Load the variables with direnv  
     ```Base
@@ -120,7 +120,7 @@ Create four essential accounts with private keys:
     ```
 ## Core Contract Deployment  
 Deploy essential L1 contracts for the chain’s functionality:  
-1. Update ~/optimism-alt-da/packages/contracts-bedrock/deploy-config and update file multiadaptive.json by referencing the following configs ( addresses will vary for each user, the following is a demo-config deployed for sepolia L1)  
+1. Update ~/optimism-dual-da/packages/contracts-bedrock/deploy-config and update file multiadaptive.json by referencing the following configs ( addresses will vary for each user, the following is a demo-config deployed for sepolia L1)  
    ```json
    {
      "l1StartingBlockTag": "0x32e7e9c4320581f9a097cb2d03f420219b6f2793b9929fd24e0cbe437cdd7a95",
@@ -215,9 +215,9 @@ Deploy essential L1 contracts for the chain’s functionality:
    }
    
    ```
-2. Navigate to ~/optimism-alt-da/packages/contracts-bedrock/ and the deploy contracts (this can take up to 15 minutes)  
+2. Navigate to ~/optimism-dual-da/packages/contracts-bedrock/ and the deploy contracts (this can take up to 15 minutes)  
    ```Base
-      cd ~/optimism-alt-da/packages/contracts-bedrock/
+      cd ~/optimism-dual-da/packages/contracts-bedrock/
       DEPLOYMENT_OUTFILE=deployments/artifact.json \
       DEPLOY_CONFIG_PATH=deploy-config/multiadaptive.json \
       forge script scripts/Deploy.s.sol:Deploy  --broadcast --private-key $GS_ADMIN_PRIVATE_KEY \
